@@ -49,6 +49,37 @@ class RunFinder
     a.spiel
   end
 
+  # the following is provided since the instructions asked for 'a function':
+  def find_indexes_single_method
+    indexes = []
+
+    @array.each_with_index do |n, index|
+      # make sure the end of the array isn't hit:
+      if (index <= @array.length - 3)
+
+        # see if the next three are all consecutive ascending or descending:
+        test = 3.times.select do
+          ((n - @array[index + 1] == 1) && (@array[index + 1] - @array[index + 2] == 1)) ||
+            ((n - @array[index + 1] == -1 ) && (@array[index + 1] - @array[index + 2] == -1))
+        end
+
+        # if all three fit the description, add this starting index to the results
+        if test.length == 3
+          indexes << index
+        end
+
+        # NOTE:
+        # i'm choosing to purposefully check Every Index rather than move ahead two spaces
+        # when a run is found - which would be slightly more efficient, but the instructions
+        # were unclear about what to do in the case of a run of more than 3.
+        # as such, i opted to return _every and any index that starts a run of 3_
+        # ex: [1, 2, 3, 4, 5, 6] => produces indexes: [0, 1, 2, 3] rather than [0, 3]
+      end
+    end
+
+    indexes
+  end
+
   def setup!
     if @array.empty?
       @array_size.times do
@@ -85,26 +116,6 @@ class RunFinder
 
   def three_run_down?(n1, n2, n3)
     is_one_less?(n1, n2) && is_one_less?(n2, n3)
-  end
-
-  def find_indexes_single_method
-    indexes = []
-
-    @array.each_with_index do |n, index|
-      if (index <= @array.length - 3)
-
-        test = 3.times.select do
-          ((n - @array[index + 1] == 1) && (@array[index + 1] - @array[index + 2] == 1)) ||
-            ((n - @array[index + 1] == -1 ) && (@array[index + 1] - @array[index + 2] == -1))
-        end
-
-        if test.length == 3
-          indexes << index
-        end
-      end
-    end
-
-    indexes
   end
 
 end
