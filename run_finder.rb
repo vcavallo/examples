@@ -1,4 +1,4 @@
-require 'pry'
+# simply $ ruby run_finder.rb to see some basic output and get further directions :)
 
 class RunFinder
   attr_reader :array, :indexes
